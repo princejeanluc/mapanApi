@@ -17,7 +17,8 @@ class EventTypeSerializer(serializers.ModelSerializer):
     events = serializers.HyperlinkedRelatedField(many=True,read_only=True,view_name='mapanEvent-detail')
     class Meta:
         model = EventType
-        fields = ['label']
+        fields = ['label','events']
+
 class MapanEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = MapanEvent
