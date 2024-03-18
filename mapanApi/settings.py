@@ -37,8 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
+    ###############################
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+    ###############################
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    ################################
+    'api',
     'drf_yasg'
 ]
 
@@ -50,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ########################################################
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'mapanApi.urls'
@@ -80,8 +92,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "mapan",
-        'USER':"ena",
-        'PASSWORD':"ena"
+        'USER':"root",
+        'PASSWORD':"",
+        'PORT':'3307'
     }
 }
 
@@ -129,10 +142,23 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+######################################
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE':10
+    'PAGE_SIZE':10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        ),
+}
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'my-app-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
+    'REGISTER_SERIALIZER': 'api.serializers.OrganizerRegistrationSerializer',
 }
 
+AUTH_USER_MODEL = 'api.Organizer'
+
+############## Essential for dj-rest-auth
+SITE_ID = 1
 

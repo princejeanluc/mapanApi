@@ -1,5 +1,6 @@
 from tkinter import EventType
 
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 
@@ -7,9 +8,8 @@ from django.utils import timezone
 # Create your models here.
 
 
-class Organizer(models.Model):
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
+class Organizer(AbstractUser):
+    username = models.CharField(unique=True, max_length=100)
     password = models.CharField(max_length=500)
     email = models.EmailField()
     linkedin = models.URLField(default="https://www.linkedin.com")
@@ -33,7 +33,7 @@ class MapanEvent(models.Model):
     latitude = models.DecimalField(max_digits=9,decimal_places=2)
     address = models.CharField(max_length=500)
     image = models.ImageField(upload_to='')
-    eventType = models.ForeignKey(EventType, on_delete=models.CASCADE, verbose_name='type')
+    eventType = models.ForeignKey(EventType, on_delete=models.CASCADE)
     organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
